@@ -1,3 +1,1 @@
-coverage/
-*.gcno
-*.gcda
+*.out

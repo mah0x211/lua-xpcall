@@ -50,23 +50,18 @@ jobs:
     -
       name: Install
       run: |
-        luarocks make XPCALL_COVERAGE=1
+        luarocks make
     -
       name: Install Tools
       run: |
-        sudo apt install lcov -y
+        luarocks install luacov
         luarocks install assert
     -
       name: Run Test
       run: |
         lua ./test/xpcall_test.lua
     -
-      name: Generate coverage reports
-      run: |
-        sh ./covgen.sh
-    -
-      name: Upload C coverage to Codecov
+      name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
-        files: ./coverage/lcov.info
         flags: unittests

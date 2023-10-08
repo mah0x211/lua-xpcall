@@ -13,17 +13,8 @@ dependencies = {
     "lua >= 5.1",
 }
 build = {
-    type = "make",
-    build_variables = {
-        CFLAGS = "$(CFLAGS)",
-        WARNINGS = "-Wall -Wno-trigraphs -Wmissing-field-initializers -Wreturn-type -Wmissing-braces -Wparentheses -Wno-switch -Wunused-function -Wunused-label -Wunused-parameter -Wunused-variable -Wunused-value -Wuninitialized -Wunknown-pragmas -Wshadow -Wsign-compare",
-        CPPFLAGS = "-I$(LUA_INCDIR)",
-        LDFLAGS = "$(LIBFLAG)",
-        LIB_EXTENSION = "$(LIB_EXTENSION)",
-        XPCALL_COVERAGE = "$(XPCALL_COVERAGE)",
-    },
-    install_variables = {
-        LIBDIR = "$(LIBDIR)",
-        LIB_EXTENSION = "$(LIB_EXTENSION)",
+    type = "builtin",
+    modules = {
+        xpcall = "xpcall.lua",
     },
 }

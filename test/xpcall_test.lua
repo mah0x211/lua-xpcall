@@ -1,3 +1,4 @@
+require('luacov')
 local assert = require('assert')
 local xpcall = require('xpcall')
 
@@ -40,24 +41,22 @@ assert.equal(result, {
     2,
 })
 
--- test that throws an error if function is not a function
-err = assert.throws(function()
-    xpcall({})
-end)
-assert.match(err, '#1 .+ %(function expected, got ', false)
-
--- test that throws an error if __call metamethod is not a function
+-- test that returns an error if function is not callable
 obj = setmetatable(obj, {
     __call = {},
 })
-err = assert.throws(function()
-    xpcall(obj, debug.traceback)
-end)
-assert.match(err, '#1 .+ %(function expected, got ', false)
+ok, err = xpcall(obj, debug.traceback)
+assert.is_false(ok)
+assert.match(err, 'attempt to call a table value')
 
 -- test that throws an error if error handler is not a function
-err = assert.throws(function()
-    xpcall(function()
-    end, {})
-end)
-assert.match(err, '#2 .+ %(function expected, got ', false)
+if not _G.jit and string.find(_VERSION, '5%.1') then
+    ok, err = xpcall({})
+    assert.is_false(ok)
+    assert.match(err, 'error handling')
+else
+    err = assert.throws(function()
+        xpcall({})
+    end)
+    assert.match(err, '#2 .+ %(.+ expected', false)
+end
